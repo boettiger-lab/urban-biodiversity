@@ -13,7 +13,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: shiny-svc
+            name: urbanbio-svc
             port:
               number: 8080
   tls:

@@ -15,8 +15,8 @@ duckdbfs::load_spatial()
 con <- duckdbfs::cached_connection()
 DBI::dbExecute(con, "SET threads = 60;")
 
-aws_public_endpoint <- "minio.carlboettiger.info"
-aws_s3_endpoint <- "minio.carlboettiger.info"
+aws_public_endpoint <- "s3-west.nrp-nautilus.io"
+aws_s3_endpoint <- "s3-west.nrp-nautilus.io"
 
 # use to populate selctors for state and county
 
@@ -62,7 +62,7 @@ get_counties <- memoise(function(state = "California") {
 get_taxa <- memoise(function(rank = "class", state, county) {
   aoi <- area_hexes(state, county)
   h0 <- get_h0(aoi)
-  tiles <- paste0(glue("https://{aws_public_endpoint}/public-gbif/taxonomy/h0="), h0, "/data_0.parquet")
+  tiles <- paste0(glue("https://{aws_public_endpoint}/public-gbif/2025-06/taxonomy/h0="), h0, "/data_0.parquet")
   open_dataset(tiles, recursive = FALSE) |>
     distinct(.data[[rank]]) |>
     #arrange(.data[[rank]]) |>
@@ -94,7 +94,7 @@ get_h0 <- memoise(function(aoi){
 get_gbif <- function(aoi) {
   # determine h0 parent cells of this area:
   h0 <- get_h0(aoi)
-  tiles <- paste0(glue("https://{aws_public_endpoint}/public-gbif/hex/h0="), h0, "/part0.parquet")
+  tiles <- paste0(glue("https://{aws_public_endpoint}/public-gbif/2025-06/hex/h0="), h0, "/data_0.parquet")
   open_dataset(tiles) |> select(kingdom, phylum, class, order, family, genus, species,
                                 basisofrecord, institutioncode, coordinateuncertaintyinmeters, h10)
 }
