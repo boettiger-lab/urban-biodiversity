@@ -5,6 +5,7 @@ WORKDIR /code
 RUN apt-get update && apt-get -y install librsvg2-dev
 
 RUN install2.r --error \
+    remotes \
     bsicons \
     bslib \
     duckdbfs \
